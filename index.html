@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tillykke, Thea</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg1:#fbe9e4; --bg2:#f3d3cf;
+    --env:#d9776b; --env-dark:#b95c52; --env-light:#e89a8f;
+    --paper:#fffaf3; --ink:#3b2a2a; --muted:#8a6d68; --gold:#d8a645;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    font-family:'Fraunces',Georgia,serif;color:var(--ink);
+    background:radial-gradient(120% 80% at 50% 0%,var(--bg1),var(--bg2));
+    min-height:100vh;overflow-x:hidden;
+    display:flex;flex-direction:column;align-items:center;
+    -webkit-tap-highlight-color:transparent;
+  }
+  /* ---------- Intro / envelope ---------- */
+  #intro{
+    min-height:100vh;width:100%;display:flex;flex-direction:column;
+    align-items:center;justify-content:center;gap:28px;padding:24px;
+    transition:opacity .6s ease, transform .6s ease;
+  }
+  #intro.gone{opacity:0;transform:scale(.96);pointer-events:none;position:absolute}
+  .hint{font-family:'Caveat',cursive;font-size:30px;color:var(--env-dark)}
+  .envelope{
+    position:relative;width:min(82vw,340px);aspect-ratio:3/2;cursor:pointer;
+    filter:drop-shadow(0 18px 30px rgba(120,50,40,.25));
+    animation:bob 2.6s ease-in-out infinite;
+  }
+  @keyframes bob{50%{transform:translateY(-8px) rotate(-1deg)}}
+  .envelope .back{position:absolute;inset:0;background:var(--env);border-radius:10px}
+  .envelope .front{
+    position:absolute;inset:0;border-radius:10px;
+    background:
+      linear-gradient(to top right, var(--env-light) 50%, transparent 50.5%) left/50% 100% no-repeat,
+      linear-gradient(to top left, var(--env-light) 50%, transparent 50.5%) right/50% 100% no-repeat;
+  }
+  .envelope .flap{
+    position:absolute;left:0;right:0;top:0;height:62%;
+    background:var(--env-dark);
+    clip-path:polygon(0 0,100% 0,50% 100%);
+    transform-origin:top;transition:transform .7s ease;border-radius:10px 10px 0 0;
+  }
+  .envelope .seal{
+    position:absolute;left:50%;top:52%;transform:translate(-50%,-50%);
+    width:58px;height:58px;border-radius:50%;
+    background:radial-gradient(circle at 35% 35%,#f0c869,var(--gold));
+    display:grid;place-items:center;font-family:'Caveat',cursive;font-size:28px;
+    color:#7a5410;box-shadow:0 3px 8px rgba(0,0,0,.2);transition:opacity .3s;
+  }
+  .envelope .name{
+    position:absolute;bottom:14px;width:100%;text-align:center;
+    font-family:'Caveat',cursive;font-size:26px;color:#fff;opacity:.95
+  }
+  .envelope.open .flap{transform:rotateX(180deg)}
+  .envelope.open .seal{opacity:0}
+  .tap{font-size:14px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase}
+
+  /* ---------- Letter ---------- */
+  #letter{
+    display:none;width:min(92vw,560px);margin:40px auto 60px;
+    background:var(--paper);border-radius:6px;padding:44px 30px 40px;
+    box-shadow:0 20px 50px rgba(120,50,40,.18);
+    opacity:0;transform:translateY(40px);
+    transition:opacity .8s ease, transform .8s ease;
+  }
+  #letter.show{opacity:1;transform:none}
+  .note{font-size:40px;text-align:center;line-height:1}
+  h1{
+    font-weight:600;font-size:clamp(30px,8vw,44px);line-height:1.1;
+    text-align:center;margin:14px 0 26px;color:var(--env-dark)
+  }
+  .body p{
+    font-family:'Fraunces',Georgia,serif;font-size:19px;line-height:1.65;
+    margin-bottom:18px;opacity:0;transform:translateY(10px);
+    transition:opacity .7s ease, transform .7s ease;
+  }
+  .body p.in{opacity:1;transform:none}
+  .body p.big{text-align:center;color:var(--env-dark);font-style:italic;font-size:23px;line-height:1.4;margin:28px 0}
+  .sign{
+    font-family:'Caveat',cursive;font-size:32px;text-align:right;margin-top:26px;
+    color:var(--env-dark);opacity:0;transition:opacity 1s ease
+  }
+  .sign.in{opacity:1}
+  .heart{display:inline-block;animation:beat 1.4s ease-in-out infinite}
+  @keyframes beat{30%{transform:scale(1.25)}60%{transform:scale(1)}}
+
+  /* ---------- Confetti ---------- */
+  #confetti{position:fixed;inset:0;pointer-events:none;z-index:10}
+  @media (prefers-reduced-motion:reduce){
+    .envelope{animation:none}.heart{animation:none}
+  }
+</style>
+</head>
+<body>
+
+<section id="intro">
+  <div class="hint">Til Thea ♡</div>
+  <div class="envelope" id="env" role="button" aria-label="Åbn kortet">
+    <div class="back"></div>
+    <div class="front"></div>
+    <div class="flap"></div>
+    <div class="seal">T</div>
+    <div class="name">14. november</div>
+  </div>
+  <div class="tap">Tryk for at åbne</div>
+</section>
+
+<article id="letter">
+  <div class="note">🎂</div>
+  <h1>Tillykke med fødselsdagen, min skat!</h1>
+  <div class="body">
+    <p>Endnu et år er gået, og tænk, hvor meget vi har nået!</p>
+    <p>For et år siden havde vi ikke vores lille kalakjokugle, vi var ikke så tæt på at købe hus, eller jeg et arbejde. Nårh nej, vi var heller ikke gift.</p>
+    <p class="big">Sikke meget vi har nået på et år!</p>
+    <p>Du er lige så smuk som sidste år – men nej, faktisk er du blevet smukkere. Du stråler som mor.</p>
+    <p>Jeg kunne ikke have ønsket mig en bedre kvinde at dele mit liv med og få børn med.</p>
+    <p class="big">Jeg elsker dig ❤️</p>
+    <p>Os to (3) mod resten, ingen kan os tæske!</p>
+    <p>Snart er Aalborg-kapitlet slut. Snart har vi hus og elbil, snart er vi det, vi har drømt om! Et totalt kedeligt, almindeligt danskerpar med hus, bil og hund.</p>
+    <p class="big">Og det er lige, hvad vi har drømt om ❤️</p>
+    <p>Jeg elsker dig, min skat, og glæder mig til flere oplevelser og år med dig.</p>
+  </div>
+  <div class="sign">Kys og kram fra Karl og Far <span class="heart">❤</span></div>
+</article>
+
+<canvas id="confetti"></canvas>
+
+<script>
+  const env = document.getElementById('env');
+  const intro = document.getElementById('intro');
+  const letter = document.getElementById('letter');
+  let opened = false;
+
+  env.addEventListener('click', () => {
+    if (opened) return; opened = true;
+    env.classList.add('open');
+    setTimeout(() => {
+      intro.classList.add('gone');
+      letter.style.display = 'block';
+      requestAnimationFrame(() => letter.classList.add('show'));
+      burst();
+      // Reveal each line when it scrolls into view, one after another
+      const items = [...letter.querySelectorAll('.body p, .sign')];
+      let queue = Promise.resolve();
+      const reveal = el => { queue = queue.then(() => new Promise(r => {
+        el.classList.add('in'); setTimeout(r, 650);
+      })); };
+      setTimeout(() => {
+        if ('IntersectionObserver' in window) {
+          const io = new IntersectionObserver(es => es.forEach(e => {
+            if (e.isIntersecting) { reveal(e.target); io.unobserve(e.target); }
+          }), { threshold: 0.3 });
+          items.forEach(el => io.observe(el));
+        } else items.forEach(el => el.classList.add('in'));
+      }, 700);
+    }, 750);
+  });
+
+  /* simple confetti */
+  const cv = document.getElementById('confetti'), cx = cv.getContext('2d');
+  function size(){ cv.width = innerWidth; cv.height = innerHeight; }
+  size(); addEventListener('resize', size);
+  const colors = ['#d9776b','#d8a645','#f3b6ad','#8fb9a8','#ffffff'];
+  let parts = [];
+  function burst(){
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    for (let i = 0; i < 160; i++) parts.push({
+      x: innerWidth/2, y: innerHeight*0.45,
+      vx: (Math.random()-0.5)*14, vy: Math.random()*-14-4,
+      r: Math.random()*6+4, c: colors[i%colors.length],
+      a: Math.random()*Math.PI, va: (Math.random()-0.5)*0.3, life: 0
+    });
+    loop();
+  }
+  function loop(){
+    cx.clearRect(0,0,cv.width,cv.height);
+    parts.forEach(p => {
+      p.vy += 0.35; p.vx *= 0.99; p.x += p.vx; p.y += p.vy; p.a += p.va; p.life++;
+      cx.save(); cx.translate(p.x,p.y); cx.rotate(p.a);
+      cx.fillStyle = p.c; cx.fillRect(-p.r/2,-p.r/4,p.r,p.r/2); cx.restore();
+    });
+    parts = parts.filter(p => p.y < cv.height + 40 && p.life < 400);
+    if (parts.length) requestAnimationFrame(loop); else cx.clearRect(0,0,cv.width,cv.height);
+  }
+</script>
+</body>
+</html>
